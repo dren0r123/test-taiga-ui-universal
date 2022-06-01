@@ -5,9 +5,11 @@
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
-        "outputPath": "dist/apps/taiga-ui-universal",
+        "outputPath": "dist/apps/taiga-ui-universal/browser",
         "index": "apps/taiga-ui-universal/src/index.html",
         "main": "apps/taiga-ui-universal/src/main.ts",
         "polyfills": "apps/taiga-ui-universal/src/polyfills.ts",
@@ -17,7 +19,9 @@
           "apps/taiga-ui-universal/src/favicon.ico",
           "apps/taiga-ui-universal/src/assets"
         ],
-        "styles": ["apps/taiga-ui-universal/src/styles.scss"],
+        "styles": [
+          "apps/taiga-ui-universal/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -82,11 +86,71 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/taiga-ui-universal"],
+      "outputs": [
+        "coverage/apps/taiga-ui-universal"
+      ],
       "options": {
         "jestConfig": "apps/taiga-ui-universal/jest.config.ts",
         "passWithNoTests": true
       }
+    },
+    "server": {
+      "executor": "@angular-devkit/build-angular:server",
+      "options": {
+        "outputPath": "dist/apps/taiga-ui-universal/server",
+        "main": "apps/taiga-ui-universal/server.ts",
+        "tsConfig": "apps/taiga-ui-universal/tsconfig.server.json",
+        "inlineStyleLanguage": "scss"
+      },
+      "configurations": {
+        "production": {
+          "outputHashing": "media",
+          "fileReplacements": [
+            {
+              "replace": "apps/taiga-ui-universal/src/environments/environment.ts",
+              "with": "apps/taiga-ui-universal/src/environments/environment.prod.ts"
+            }
+          ]
+        },
+        "development": {
+          "optimization": false,
+          "sourceMap": true,
+          "extractLicenses": false
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve-ssr": {
+      "executor": "@nguniversal/builders:ssr-dev-server",
+      "configurations": {
+        "development": {
+          "browserTarget": "taiga-ui-universal:build:development",
+          "serverTarget": "taiga-ui-universal:server:development",
+          "open": true
+        },
+        "production": {
+          "browserTarget": "taiga-ui-universal:build:production",
+          "serverTarget": "taiga-ui-universal:server:production"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "prerender": {
+      "executor": "@nguniversal/builders:prerender",
+      "options": {
+        "routes": ["/"]
+      },
+      "configurations": {
+        "production": {
+          "browserTarget": "taiga-ui-universal:build:production",
+          "serverTarget": "taiga-ui-universal:server:production"
+        },
+        "development": {
+          "browserTarget": "taiga-ui-universal:build:development",
+          "serverTarget": "taiga-ui-universal:server:development"
+        }
+      },
+      "defaultConfiguration": "production"
     }
   },
   "tags": []
