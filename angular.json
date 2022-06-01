@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+  "version": 2,
+  "projects": {
+    "taiga-ui-universal": "apps/taiga-ui-universal",
+    "taiga-ui-universal-e2e": "apps/taiga-ui-universal-e2e"
+  }
+}
